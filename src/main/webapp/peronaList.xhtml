@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:form>
+        <p:menubar>
+            <p:menuitem>
+                <h:link outcome="/personaList.xhmtl">
+                    <h:graphicImage height="50" url="https://cdn1.iconfinder.com/data/icons/youtuber/256/profile-user-follower-subscriber-persona-512.png"/>
+                </h:link>
+            </p:menuitem>
+            <p:menuitem value="Personas" url="peronaList.xhtml"/>
+            <p:menuitem value="Telefonos" action="#{telefonoBean.cargaList(null)}"/>
+            <p:menuitem value="Direcciones" url="direccionList.xhtml"/>
+        </p:menubar>
+        <p:breadCrumb>
+            <p:menuitem value="Personas" url="personaList.xhtml" />
+        </p:breadCrumb>
+    </h:form>
+    <h1>Esta es la lista de personas</h1>
+</h:head>
+<h:body>
+    <p:growl id="msgs" showDetail="true"></p:growl>
+    <h:form id="form">
+        <p:dataTable var="persona" value="#{personaBean.personas}" id="tabla-persona" paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+                     widgetVar="dataTableWidgetVar" filteredValue="#{personaBean.personasFiltradas}">
+            <p:column headerText="Id">
+                <h:outputText value="#{persona.id}" />
+            </p:column>
+
+            <p:column headerText="Identificacion">
+                <h:outputText value="#{persona.identificacion}" />
+            </p:column>
+
+            <p:column headerText="Nombre" filterBy="#{persona.nombre}" filterMatchMode="contains">
+                <h:outputText value="#{persona.nombre}" />
+            </p:column>
+
+            <p:column headerText="Fecha">
+                <h:outputText value="#{persona.fecha}" />
+            </p:column>
+            <p:column headerText="Acciones" >
+                <p:commandButton icon="fa fa-fw fa-remove" title="Eliminar" update="tabla-persona msgs" action="#{personaBean.delete}" oncomplete="PF('dataTableWidgetVar').filter()">
+                    <f:param name="persona_id" value="#{persona.id}"></f:param>
+                    <p:confirm header="confirmacion" message="seguro de borrar?" icon="pi pi-exclamation-triangle"></p:confirm>
+                </p:commandButton>
+                <p:commandButton icon="fa fa-fw fa-edit" title="Actualizar" update="tabla-persona" action="#{personaBean.carga(persona)}">
+                </p:commandButton>
+
+                <p:commandButton icon="fa fa-fw fa-phone" title="Telefonos" action="#{telefonoBean.cargaList(persona.id)}">
+                </p:commandButton>
+
+                <p:commandButton icon="fa fa-fw fa-address-card" title="Direcciones" action="#{direccionBean.cargaList(persona.id)}">
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" styleClass="ui-confirmdialog-yes" icon="pi pi-check" ></p:commandButton>
+                    <p:commandButton value="No" styleClass="ui-confirmdialog-no" icon="pi pi-times"></p:commandButton>
+                </p:confirmDialog>
+            </p:column>
+        </p:dataTable>
+        <p:linkButton outcome="personaCreate" value="Crear persona"></p:linkButton>
+    </h:form>
+</h:body>
+
+
+</html>

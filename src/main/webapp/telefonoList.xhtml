@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:form>
+        <p:menubar>
+            <p:menuitem>
+                <h:link outcome="/personaList.xhmtl">
+                    <h:graphicImage height="50" url="https://cdn1.iconfinder.com/data/icons/youtuber/256/profile-user-follower-subscriber-persona-512.png"/>
+                </h:link>
+            </p:menuitem>
+            <p:menuitem value="Personas" url="peronaList.xhtml"/>
+            <p:menuitem value="Telefonos" action="#{telefonoBean.cargaList(null)}"/>
+            <p:menuitem value="Direcciones" action="#{direccionBean.cargaList(null)}"/>
+        </p:menubar>
+        <p:breadCrumb>
+            <p:menuitem value="Personas" url="personaList.xhtml" />
+            <p:menuitem value="Telefonos" action="#{telefonoBean.cargaList(null)}" />
+        </p:breadCrumb>
+    </h:form>
+    <h1>Esta es la lista de telefonos</h1>
+</h:head>
+<h:body>
+    <p:growl id="msgs" showDetail="true"></p:growl>
+    <h:form id="form">
+        <p:dataTable var="telefono" value="#{telefonoBean.telefonos}" id="tabla-telefono" paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+                     widgetVar="dataTableWidgetVar" filteredValue="#{telefonoBean.telefonosFiltrados}">
+            <p:column headerText="Id">
+                <h:outputText value="#{telefono.id}" />
+            </p:column>
+
+            <p:column headerText="Numero" filterBy="#{telefono.numero}" filterMatchMode="contains">
+                <h:outputText value="#{telefono.numero}"/>
+            </p:column>
+
+            <p:column headerText="Persona">
+                <h:outputText value="#{telefono.persona.nombre}" />
+            </p:column>
+
+            <p:column headerText="Acciones">
+                <p:commandButton icon="fa fa-fw fa-remove" title="Eliminar" update="tabla-telefono msgs" action="#{telefonoBean.delete}" oncomplete="PF('dataTableWidgetVar').filter()">
+                    <f:param name="telefono_id" value="#{telefono.id}"></f:param>
+                    <p:confirm header="confirmacion" message="seguro de borrar?" icon="pi pi-exclamation-triangle"></p:confirm>
+                </p:commandButton>
+                <p:commandButton icon="fa fa-fw fa-edit" title="Actualizar" update="tabla-telefono" action="#{telefonoBean.carga(telefono)}">
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" styleClass="ui-confirmdialog-yes" icon="pi pi-check" ></p:commandButton>
+                    <p:commandButton value="No" styleClass="ui-confirmdialog-no" icon="pi pi-times"></p:commandButton>
+                </p:confirmDialog>
+            </p:column>
+        </p:dataTable>
+        <p:linkButton outcome="telefonoCreate" value="Crear telefono"></p:linkButton>
+    </h:form>
+</h:body>
+
+
+</html>

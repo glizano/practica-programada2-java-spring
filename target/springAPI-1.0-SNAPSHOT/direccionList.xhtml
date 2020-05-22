@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:form>
+        <p:menubar>
+            <p:menuitem>
+                <h:link outcome="/personaList.xhmtl">
+                    <h:graphicImage height="50" url="https://cdn1.iconfinder.com/data/icons/youtuber/256/profile-user-follower-subscriber-persona-512.png"/>
+                </h:link>
+            </p:menuitem>
+            <p:menuitem value="Personas" url="peronaList.xhtml"/>
+            <p:menuitem value="Telefonos" action="#{telefonoBean.cargaList(null)}"/>
+            <p:menuitem value="Direcciones" action="#{direccionBean.cargaList(null)}"/>
+        </p:menubar>
+
+        <p:breadCrumb>
+            <p:menuitem value="Personas" url="personaList.xhtml" />
+            <p:menuitem value="Direcciones" action="#{direccionBean.cargaList(null)}"/>
+        </p:breadCrumb>
+    </h:form>
+    <h1>Esta es la lista de direccions</h1>
+</h:head>
+<h:body>
+    <p:growl id="msgs" showDetail="true"></p:growl>
+    <h:form>
+        <p:dataTable var="direccion" value="#{direccionBean.direccions}" id="tabla-direccion" paginator="true" rows="10" rowsPerPageTemplate="5,10,15"
+                     widgetVar="dataTableWidgetVar" filteredValue="#{direccionBean.direccionsFiltrados}">
+            <p:column headerText="Id">
+                <h:outputText value="#{direccion.id}" />
+            </p:column>
+
+            <p:column headerText="Codigo Postal" filterBy="#{direccion.codigo_postal}" filterMatchMode="contains">
+                <h:outputText value="#{direccion.codigo_postal}" />
+            </p:column>
+
+            <p:column headerText="Otras Senas" filterBy="#{direccion.otras_senas}" filterMatchMode="contains">
+                <h:outputText value="#{direccion.otras_senas}" />
+            </p:column>
+
+            <p:column headerText="Persona">
+                <h:outputText value="#{direccion.persona.nombre}" />
+            </p:column>
+
+            <p:column headerText="Acciones">
+                <p:commandButton icon="fa fa-fw fa-remove" title="Eliminar" update="tabla-direccion msgs" action="#{direccionBean.delete}" oncomplete="PF('dataTableWidgetVar').filter()">
+                    <f:param name="direccion_id" value="#{direccion.id}"></f:param>
+                    <p:confirm header="confirmacion" message="seguro de borrar?" icon="pi pi-exclamation-triangle"></p:confirm>
+                </p:commandButton>
+                <p:commandButton icon="fa fa-fw fa-edit" title="Actualizar" update="tabla-direccion" action="#{direccionBean.carga(direccion)}">
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" styleClass="ui-confirmdialog-yes" icon="pi pi-check" ></p:commandButton>
+                    <p:commandButton value="No" styleClass="ui-confirmdialog-no" icon="pi pi-times"></p:commandButton>
+                </p:confirmDialog>
+            </p:column>
+        </p:dataTable>
+        <p:commandButton action="#{direccionBean.carga}" value="Crear direccion"></p:commandButton>
+    </h:form>
+</h:body>
+
+
+</html>

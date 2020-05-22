@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <h:form>
+        <p:menubar>
+            <p:menuitem>
+                <h:link outcome="/personaList.xhmtl">
+                    <h:graphicImage height="50" url="https://cdn1.iconfinder.com/data/icons/youtuber/256/profile-user-follower-subscriber-persona-512.png"/>
+                </h:link>
+            </p:menuitem>
+            <p:menuitem value="Personas" url="peronaList.xhtml"/>
+            <p:menuitem value="Telefonos" action="#{telefonoBean.cargaList(null)}">
+            <p:menuitem value="Direcciones" url="direccionList.xhtml"/>
+        </p:menubar>
+        <p:breadCrumb>
+            <p:menuitem value="Personas" url="personaList.xhtml" />
+            <p:menuitem value="Crear Personas" url="personaCreate.xhtml" />
+        </p:breadCrumb>
+    </h:form>
+    <h1>Crear personas</h1>
+</h:head>
+<h:body>
+    <h:form>
+        <p:growl id="msgs" showDetail="true"></p:growl>
+        <h:panelGrid columns="2" cellpadding="5" id="panelgrid">
+            <p:outputLabel for="identificacion" value="Identificacion"></p:outputLabel>
+            <p:inputNumber id="identificacion" value="#{personaBean.persona.identificacion}" required="true" decimalPlaces="0"></p:inputNumber>
+
+            <p:outputLabel for="nombre" value="nombre"></p:outputLabel>
+            <p:inputText id="nombre" value="#{personaBean.persona.nombre}" required="true"></p:inputText>
+
+            <p:outputLabel for="fecha" value="fecha"></p:outputLabel>
+            <p:datePicker id="fecha" value="#{personaBean.persona.fecha}" pattern="yyyy-MM-dd" required="true"></p:datePicker>
+        </h:panelGrid>
+        <p:commandButton id="submit-button" value="Guardar" action="#{personaBean.create}" update="msgs panelgrid"/>
+        <p:linkButton outcome="peronaList" value="Lista personas"></p:linkButton>
+    </h:form>
+</h:body>
+</html>
